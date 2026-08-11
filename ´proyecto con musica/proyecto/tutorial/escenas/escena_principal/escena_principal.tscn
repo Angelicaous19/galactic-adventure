@@ -1,0 +1,74 @@
+[gd_scene load_steps=15 format=3 uid="uid://wokgedb436jk"]
+
+[ext_resource type="PackedScene" uid="uid://bm7ynf8ht1xr8" path="res://escenas/nivel_1/nivel_1.tscn" id="1_pdctq"]
+[ext_resource type="Script" uid="uid://de3hna2y84jwe" path="res://escenas/escena_principal/escena_principal.gd" id="1_snxy5"]
+[ext_resource type="PackedScene" uid="uid://dpi6214n0auyo" path="res://escenas/escena_final/escena_final.tscn" id="2_sbgap"]
+[ext_resource type="PackedScene" uid="uid://dc2qh7qqnq6pl" path="res://escenas/nivel_2/nivel_2.tscn" id="3_yoxmf"]
+[ext_resource type="AudioStream" uid="uid://csyoql15iygaw" path="res://musica/musica.wav" id="5_y7kll"]
+[ext_resource type="PackedScene" uid="uid://dc6cpdwni6fxq" path="res://escenas/controlador_partida/controlador_partida.tscn" id="6_e307b"]
+[ext_resource type="PackedScene" uid="uid://do05mkwxxx06b" path="res://escenas/contador_muertes/contador_muertes.tscn" id="6_px6n3"]
+[ext_resource type="Script" uid="uid://b1sdhesyweg0h" path="res://escenas/escena_principal/controlador_pausa.gd" id="8_e307b"]
+[ext_resource type="PackedScene" path="res://escenas/contador_puntuacion/contador_puntuacion.tscn" id="9_puntos"]
+[ext_resource type="PackedScene" path="res://escenas/pantalla_derrota/pantalla_derrota.tscn" id="10_derrota"]
+[ext_resource type="PackedScene" path="res://escenas/menu_pausa/menu_pausa.tscn" id="11_pausa"]
+[ext_resource type="PackedScene" path="res://escenas/contador_vidas/contador_vidas.tscn" id="12_vidas"]
+[ext_resource type="PackedScene" path="res://escenas/boton_menu_pausa/boton_menu_pausa.tscn" id="13_boton_pausa"]
+[ext_resource type="AudioStream" path="res://musica/menu.mp3" id="14_menu_musica"]
+
+[node name="EscenaPrincipal" type="Node2D" node_paths=PackedStringArray("controlador_partida", "canvas_layer", "musica", "musica_pausa", "hud_puntuacion", "hud_vidas", "hud_boton_pausa")]
+script = ExtResource("1_snxy5")
+niveles = Array[PackedScene]([ExtResource("1_pdctq"), ExtResource("3_yoxmf"), ExtResource("2_sbgap")])
+controlador_partida = NodePath("ControladorPartida")
+pantalla_derrota = ExtResource("10_derrota")
+canvas_layer = NodePath("CanvasLayer")
+musica = NodePath("AudioStreamPlayer2D")
+musica_pausa = NodePath("MusicaPausa")
+hud_puntuacion = NodePath("CanvasLayer/ContadorPuntuacion")
+hud_vidas = NodePath("CanvasLayer/ContadorVidas")
+hud_boton_pausa = NodePath("CanvasLayer/BotonMenuPausa")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2.465, 2.465)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_y7kll")
+autoplay = true
+bus = &"Musica"
+
+[node name="MusicaPausa" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("14_menu_musica")
+bus = &"Musica"
+
+[node name="ControladorPartida" parent="." instance=ExtResource("6_e307b")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ContadorVidas" parent="CanvasLayer" instance=ExtResource("12_vidas")]
+
+[node name="ContadorMuertes" parent="CanvasLayer" instance=ExtResource("6_px6n3")]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.0
+offset_top = 16.825
+offset_right = 0.0
+offset_bottom = 16.825
+grow_vertical = 1
+
+[node name="ContadorPuntuacion" parent="CanvasLayer" instance=ExtResource("9_puntos")]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.0
+offset_top = 48.825
+offset_right = 0.0
+offset_bottom = 48.825
+grow_vertical = 1
+
+[node name="BotonMenuPausa" parent="CanvasLayer" instance=ExtResource("13_boton_pausa")]
+
+[node name="MenuPausa" parent="CanvasLayer" instance=ExtResource("11_pausa")]
+
+[node name="ControladorPausa" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("8_e307b")
